@@ -17,6 +17,7 @@ app.get('/employees', (req, res) => {
 
   // q: departmentId=1 and firstName = 'ABC' or lastName = 'XYZ'
   let filteredEmployees = [];
+
   if (q) {
     let query = `el.${q
       .replaceAll('and', '&&el.')
@@ -25,14 +26,17 @@ app.get('/employees', (req, res) => {
       .replaceAll('!=', '!==')
       .replaceAll(' ', '')}`;
     filteredEmployees = employees.filter((el) => eval(query));
+    console.log(filteredEmployees, query);
   } else {
     filteredEmployees = employees;
   }
 
-  obj.items = filteredEmployees.length ? filteredEmployees.slice(
-    Number(startIndex),
-    Number(startIndex) + Number(limit)
-  ) : [];
+  obj.items = filteredEmployees.length
+    ? filteredEmployees.slice(
+        Number(startIndex),
+        Number(startIndex) + Number(limit)
+      )
+    : [];
 
   if (fields) {
     obj.items = obj.items.map((el) => {
@@ -59,7 +63,9 @@ app.get('/employees', (req, res) => {
   obj.startIndex = startIndex;
   obj.count = obj.items.length;
   obj.total = employees.length;
-  obj.hasMore = filteredEmployees.length ?  filteredEmployees.length > limit : false;
+  obj.hasMore = filteredEmployees.length > limit;
+  if (!obj.items.length || obj.items.length < limit) obj.hasMore = false;
+
   res.send(obj);
 });
 
