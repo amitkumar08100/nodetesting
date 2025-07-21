@@ -32,7 +32,7 @@ app.get('/employees', (req, res) => {
   obj.items = filteredEmployees.length ? filteredEmployees.slice(
     Number(startIndex),
     Number(startIndex) + Number(limit)
-  ) || [];
+  ) : [];
 
   if (fields) {
     obj.items = obj.items.map((el) => {
