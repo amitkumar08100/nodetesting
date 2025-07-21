@@ -29,10 +29,10 @@ app.get('/employees', (req, res) => {
     filteredEmployees = employees;
   }
 
-  obj.items = filteredEmployees.slice(
+  obj.items = filteredEmployees.length ? filteredEmployees.slice(
     Number(startIndex),
     Number(startIndex) + Number(limit)
-  );
+  ) || [];
 
   if (fields) {
     obj.items = obj.items.map((el) => {
@@ -59,7 +59,7 @@ app.get('/employees', (req, res) => {
   obj.startIndex = startIndex;
   obj.count = obj.items.length;
   obj.total = employees.length;
-  obj.hasMore = obj.items.length > limit;
+  obj.hasMore = filteredEmployees.length ?  filteredEmployees.length > limit : false;
   res.send(obj);
 });
 
