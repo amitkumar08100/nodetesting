@@ -59,7 +59,7 @@ app.get('/employees', (req, res) => {
   obj.startIndex = startIndex;
   obj.count = obj.items.length;
   obj.total = employees.length;
-  obj.hasMore = filteredEmployees.length > limit;
+  obj.hasMore = obj.items.length > limit;
   res.send(obj);
 });
 
